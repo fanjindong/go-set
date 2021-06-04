@@ -21,9 +21,25 @@ func main() {
 
 ## Complete Tutorial
 
-[Cardinality() int](###Cardinality() int)
+* [Cardinality() int](#cardinality-int)
+* [Adds(\.\.\.interface\{\}) bool](#addsinterface-bool)
+* [Clear()](#clear)
+* [Removes(\.\.\.interface\{\})](#removesinterface)
+* [Contains(\.\.\.interface\{\}) bool](#containsinterface-bool)
+* [Empty() bool](#empty-bool)
+* [Singleton() bool](#singleton-bool)
+* [IsSub(ISet) bool](#issubiset-bool)
+* [Unions(\.\.\.ISet) ISet](#unionsiset-iset)
+* [Intersections(\.\.\.ISet) ISet](#intersectionsiset-iset)
+* [Complements(\.\.\.ISet) ISet](#complementsiset-iset)
+* [Clone() ISet](#clone-iset)
+* [Equal(ISet) bool](#equaliset-bool)
+* [Pop() interface\{\}](#pop-interface)
+* [ToSlice() []interface\{\}](#toslice-interface)
+* [Iterator() \*Iterator](#iterator-iterator)
+* [String() string](#string-string)
 
-###Cardinality() int
+### Cardinality() int
 
 The cardinality of a set S, denoted |S|, is the number of members of S.
 For example, if B = {blue, white, red}, then |B| = 3.
@@ -36,7 +52,7 @@ NewMapSet().Cardinality() // 0
 NewMapSet(1,2).Cardinality() // 2
 ```
 
-###Adds(...interface{}) bool
+### Adds(...interface{}) bool
 
 Adds many elements to the set. Returns whether all the items was added.
 
@@ -47,11 +63,11 @@ NewMapSet(1,2).Add(1,4) // false
 NewMapSet(1,2).Add(1,2) // false
 ```
 
-###Clear()
+### Clear()
 
 removes all elements from the set, leaving the empty set.
 
-###Removes(...interface{})
+### Removes(...interface{})
 
 remove elements from the set.
 
@@ -62,7 +78,7 @@ NewMapSet(1,2).Removes(1,4) // {2}
 NewMapSet(1,2).Removes(1,2) // {}
 ```
 
-###Contains(...interface{}) bool
+### Contains(...interface{}) bool
 
 Returns whether the given items are all in the set.
 
@@ -74,7 +90,7 @@ NewMapSet(1,2).Contains(1,2,3) // false
 NewMapSet(1,2).Contains(3) // false
 ```
 
-###Empty() bool
+### Empty() bool
 
 The empty set (or null set) is the unique set that has no members. It is denoted ∅({}).
 
@@ -84,7 +100,7 @@ NewMapSet().Empty() // true
 NewMapSet(1,2).Empty() // false
 ```
 
-###Singleton() bool
+### Singleton() bool
 
 A singleton set is a set with exactly one element; such a set may also be called a unit set.
 Any such set can be written as {x}, where x is the element. The set {x} and the element x mean different things;
@@ -96,7 +112,7 @@ NewMapSet(1).Singleton() //true
 NewMapSet(1,2).Singleton() //false
 ```
 
-###IsSub(ISet) bool
+### IsSub(ISet) bool
 
 If every element of set A is also in B, then A is described as being a subset of B, or contained in B, written A ⊆ B. B ⊇ A means B contains A, B includes A, or B is a superset of A; B ⊇ A is equivalent to A ⊆ B. The relationship between sets established by ⊆ is called inclusion or containment. Two sets are equal if they contain each other: A ⊆ B and B ⊆ A is equivalent to A = B.
 If A is a subset of B, but A is not equal to B, then A is called a proper subset of B. This can be written A ⊊ B. Likewise, B ⊋ A means B is a proper superset of A, i.e. B contains A, and is not equal to A.
@@ -110,7 +126,7 @@ NewMapSet(1,2,3,4).IsSub(NewMapSet(1,2,3,4)) // true
 ```
 The empty set is a subset of every set, and every set is a subset of itself.
 
-###Unions(...ISet) ISet
+### Unions(...ISet) ISet
 
 Two sets can be "added" together. The union of A and B, denoted by A ∪ B, is the set of all things that are members of either A or B.
 
@@ -121,7 +137,7 @@ NewMapSet(1,2).Unions(NewMapSet(3,2)) // NewMapSet(1,2,3)
 NewMapSet(1,2,3).Unions(NewMapSet(3), NewMapSet(4,5)) // NewMapSet(1,2,3,4,5)
 ```
 
-###Intersections(...ISet) ISet
+### Intersections(...ISet) ISet
 
 A new set can also be constructed by determining which members two sets have "in common".
 The intersection of A and B, denoted by A ∩ B, is the set of all things that are members of both A and B. If A ∩ B = ∅, then A and B are said to be disjoint.
@@ -134,7 +150,7 @@ NewMapSet(1,2).Intersections(NewMapSet(3,2)) // NewMapSet(2)
 NewMapSet(1,2).Intersections(NewMapSet(3,4)) // NewMapSet()
 ```
 
-###Complements(...ISet) ISet
+### Complements(...ISet) ISet
 
 Two sets can also be "subtracted". The relative complement of B in A (also called the set-theoretic difference of A and B),
 denoted by A \ B (or A − B), is the set of all elements that are members of A, but not members of B.
@@ -150,11 +166,11 @@ NewMapSet(1,2).Complements(NewMapSet(1,2)) // NewMapSet().
 NewMapSet(1,2,3,4).Complements(NewMapSet(1,3)) // NewMapSet(2,4).
 ```
 
-###Clone() ISet
+### Clone() ISet
 
 Returns a clone of the set using the same implementation, duplicating all keys.
 
-###Equal(ISet) bool
+### Equal(ISet) bool
 
 Determines if two sets are equal to each other.
 If they have the same cardinality and contain the same elements, they are considered equal.
@@ -167,7 +183,7 @@ NewMapSet(1,2).Equal(NewMapSet(1,4)) // false
 NewMapSet(1,2).Equal(NewMapSet(1,2)) // true
 ```
 
-###Pop() interface{}
+### Pop() interface{}
 
 removes and returns an arbitrary item from the set.
 return nil if set is full.
@@ -179,7 +195,7 @@ NewMapSet(1,2).Pop() // 1 or 2
 NewMapSet().Pop() // nil
 ```
 
-###ToSlice() []interface{}
+### ToSlice() []interface{}
 
 Returns the members of the set as a slice.
 
@@ -189,7 +205,7 @@ NewMapSet().ToSlice() // nil
 NewMapSet(1,2).ToSlice() // []interface{}{1,2}
 ```
 
-###Iterator() *Iterator
+### Iterator() *Iterator
 
 Returns an Iterator object that you can use to range over the set.
 
@@ -204,7 +220,7 @@ for elem := range iter.C{
 // 2
 ```
 
-###String() string
+### String() string
 
 Formatted output string.
 
