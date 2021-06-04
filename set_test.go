@@ -99,7 +99,7 @@ func Test_mapSet_ToSlice(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.s.ToSlice(); !reflect.DeepEqual(got, tt.want) {
+			if got := tt.s.ToSlice(); !reflect.DeepEqual(slice2map(got), slice2map(tt.want)) {
 				t.Errorf("ToSlice() = %v, want %v", got, tt.want)
 			}
 		})
@@ -385,4 +385,12 @@ func Test_mapSet_String(t *testing.T) {
 			}
 		})
 	}
+}
+
+func slice2map(s []interface{}) map[interface{}]struct{} {
+	m := make(map[interface{}]struct{}, len(s))
+	for _, item := range s {
+		m[item] = struct{}{}
+	}
+	return m
 }
