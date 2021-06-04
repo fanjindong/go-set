@@ -20,7 +20,7 @@ func main() {
 ```
 
 ## Complete Tutorial
-
+ISet
 * [Cardinality() int](#cardinality-int)
 * [Adds(\.\.\.interface\{\}) bool](#addsinterface-bool)
 * [Clear()](#clear)
@@ -35,9 +35,11 @@ func main() {
 * [Clone() ISet](#clone-iset)
 * [Equal(ISet) bool](#equaliset-bool)
 * [Pop() interface\{\}](#pop-interface)
-* [ToSlice() []interface\{\}](#toslice-interface)
+* [ToSlice() Slice](#toslice-slice)
 * [Iterator() \*Iterator](#iterator-iterator)
 * [String() string](#string-string)
+
+Slice
 
 ### Cardinality() int
 
@@ -195,14 +197,16 @@ NewMapSet(1,2).Pop() // 1 or 2
 NewMapSet().Pop() // nil
 ```
 
-### ToSlice() []interface{}
+### ToSlice() Slice
 
 Returns the members of the set as a slice.
 
 Examples:
 ```go
 NewMapSet().ToSlice() // nil
-NewMapSet(1,2).ToSlice() // []interface{}{1,2}
+NewMapSet(1,2).ToSlice().Interface() // []interface{}{1,2}
+NewMapSet(1,2).ToSlice().Int() // []int{1,2}, nil
+NewMapSet(1,2).ToSlice().Int64() // []int64{1,2}, nil
 ```
 
 ### Iterator() *Iterator

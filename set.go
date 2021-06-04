@@ -101,8 +101,9 @@ type ISet interface {
 	// Returns the members of the set as a slice.
 	//Examples:
 	//{}.ToSlice() return nil
-	//{1, 2}.ToSlice() return []interface{}{1,2}
-	ToSlice() []interface{}
+	//{1, 2}.ToSlice().Interface() return []interface{}{1,2}
+	//{1, 2}.ToSlice().Int() return []int{}{1,2}
+	ToSlice() Slice
 	// Returns an Iterator object that you can use to range over the set.
 	//Examples:
 	//iter := {1, 2}.Iterator()
@@ -138,8 +139,8 @@ func (s mapSet) Cardinality() int {
 	return len(s)
 }
 
-func (s mapSet) ToSlice() []interface{} {
-	result := make([]interface{}, 0, len(s))
+func (s mapSet) ToSlice() Slice {
+	result := make(Slice, 0, len(s))
 	for elem, _ := range s {
 		result = append(result, elem)
 	}
