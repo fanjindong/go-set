@@ -371,16 +371,16 @@ func Test_mapSet_String(t *testing.T) {
 	tests := []struct {
 		name string
 		s    mapSet
-		want string
+		want ISet
 	}{
-		{name: "1", s: NewMapSet().(mapSet), want: "{}"},
-		{name: "2", s: NewMapSet(1).(mapSet), want: "{1}"},
-		{name: "3", s: NewMapSet(1, "a").(mapSet), want: "{1,a}"},
-		{name: "4", s: NewMapSet(1, "a", 0).(mapSet), want: "{1,a,0}"},
+		{name: "1", s: NewMapSet().(mapSet), want: NewMapSet("{}")},
+		{name: "2", s: NewMapSet(1).(mapSet), want: NewMapSet("{1}")},
+		{name: "3", s: NewMapSet(1, "a").(mapSet), want: NewMapSet("{1,a}", "{a,1}")},
+		{name: "4", s: NewMapSet(1, "a", 0).(mapSet), want: NewMapSet("{1,a,0}", "{1,0,a}", "{0,a,1}", "{0,1,a}", "{a,0,1}", "{a,1,0}")},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.s.String(); got != tt.want {
+			if got := tt.s.String(); !tt.want.Contains(got) {
 				t.Errorf("String() = %v, want %v", got, tt.want)
 			}
 		})
