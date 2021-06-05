@@ -1,3 +1,6 @@
+[![CI](https://github.com/fanjindong/go-set/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/fanjindong/go-set/actions/workflows/main.yml)
+[![GoDoc](https://godoc.org/github.com/fanjindong/go-set?status.svg)](https://pkg.go.dev/github.com/fanjindong/go-set)
+
 # go-set
 Implementation of set data structure in golang language
 
