@@ -4,6 +4,8 @@
 
 Implementation of set data structure in golang language
 
+![image](./images/LoonyDook_ZH-CN1879420705_1920x1080.jpg)
+
 ## Fast Start
 
 ```go
