@@ -103,7 +103,7 @@ type ISet interface {
 	//{}.ToSlice() return nil
 	//{1, 2}.ToSlice().Interface() return []interface{}{1,2}
 	//{1, 2}.ToSlice().Int() return []int{}{1,2}
-	ToSlice() Slice
+	ToSlice() ISlice
 	// Returns an Iterator object that you can use to range over the set.
 	//Examples:
 	//iter := {1, 2}.Iterator()
@@ -139,7 +139,7 @@ func (s mapSet) Cardinality() int {
 	return len(s)
 }
 
-func (s mapSet) ToSlice() Slice {
+func (s mapSet) ToSlice() ISlice {
 	result := make(Slice, 0, len(s))
 	for elem, _ := range s {
 		result = append(result, elem)
@@ -185,13 +185,13 @@ func (s mapSet) IsSub(other ISet) bool {
 	if s.Cardinality() > other.Cardinality() {
 		return false
 	}
-	return other.Contains(s.ToSlice()...)
+	return other.Contains(s.ToSlice().Interface()...)
 }
 
 func (s mapSet) Unions(others ...ISet) ISet {
 	result := s.Clone()
 	for _, other := range others {
-		result.Adds(other.ToSlice()...)
+		result.Adds(other.ToSlice().Interface()...)
 	}
 	return result
 }
@@ -209,7 +209,7 @@ func (s mapSet) Intersections(others ...ISet) ISet {
 		}
 	}
 Loop:
-	for _, elem := range baseSet.ToSlice() {
+	for _, elem := range baseSet.ToSlice().Interface() {
 		for _, diffSet := range diffSets {
 			if !diffSet.Contains(elem) {
 				continue Loop
@@ -223,13 +223,13 @@ Loop:
 func (s mapSet) Complements(others ...ISet) ISet {
 	result := s.Clone()
 	for _, other := range others {
-		result.Removes(other.ToSlice()...)
+		result.Removes(other.ToSlice().Interface()...)
 	}
 	return result
 }
 
 func (s mapSet) Clear() {
-	s.Removes(s.ToSlice()...)
+	s.Removes(s.ToSlice().Interface()...)
 }
 
 func (s mapSet) Contains(elems ...interface{}) bool {
@@ -242,14 +242,14 @@ func (s mapSet) Contains(elems ...interface{}) bool {
 }
 
 func (s mapSet) Clone() ISet {
-	return NewMapSet(s.ToSlice()...)
+	return NewMapSet(s.ToSlice().Interface()...)
 }
 
 func (s mapSet) Equal(other ISet) bool {
 	if other.Cardinality() != s.Cardinality() {
 		return false
 	}
-	return s.Contains(other.ToSlice()...)
+	return s.Contains(other.ToSlice().Interface()...)
 }
 
 func (s mapSet) Pop() interface{} {

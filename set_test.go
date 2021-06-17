@@ -99,7 +99,7 @@ func Test_mapSet_ToSlice(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.s.ToSlice(); !reflect.DeepEqual(slice2map(got), slice2map(tt.want)) {
+			if got := tt.s.ToSlice().Interface(); !reflect.DeepEqual(slice2map(got), slice2map(tt.want)) {
 				t.Errorf("ToSlice() = %v, want %v", got, tt.want)
 			}
 		})
