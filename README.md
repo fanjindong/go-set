@@ -16,24 +16,26 @@ Implementation of set data structure in golang language
 import "github.com/fanjindong/go-set"
 
 func main() {
-    s := set.NewMapSet()
+    s := set.NewSet()
     s.Adds(1)
     s.Adds(2,3)
     
     fmt.Println(s.String()) // {1,2,3}
     fmt.Println(s.Contains(1)) // true
     fmt.Println(s.Cardinality()) // 3
-    fmt.Println(s.ToSlice()) // []interface{}{1,2,3}
+    fmt.Println(s.ToSlice().Int()) // []int{1,2,3}, nil
 }
 
 ```
 
 ## Complete Tutorial
-ISet
+ISet contains threadSafeSet: `NewSet()`, threadUnsafeSet: `NewThreadUnsafeSet()`.
+
+List of interface methods
 * [Cardinality() int](#cardinality-int)
 * [Adds(\.\.\.interface\{\}) bool](#addsinterface-bool)
 * [Clear()](#clear)
-* [Removes(\.\.\.interface\{\})](#removesinterface)
+* [Removes(\.\.\.interface\{\}) bool](#removesinterface-bool)
 * [Contains(\.\.\.interface\{\}) bool](#containsinterface-bool)
 * [Empty() bool](#empty-bool)
 * [Singleton() bool](#singleton-bool)
@@ -45,7 +47,6 @@ ISet
 * [Equal(ISet) bool](#equaliset-bool)
 * [Pop() interface\{\}](#pop-interface)
 * [ToSlice() Slice](#toslice-slice)
-* [Iterator() \*Iterator](#iterator-iterator)
 * [String() string](#string-string)
 
 Slice
@@ -59,8 +60,8 @@ The cardinality of the empty set is zero.
 
 Examples:
 ```go
-NewMapSet().Cardinality() // 0
-NewMapSet(1,2).Cardinality() // 2
+NewSet().Cardinality() // 0
+NewSet(1,2).Cardinality() // 2
 ```
 
 ### Adds(...interface{}) bool
@@ -69,24 +70,24 @@ Adds many elements to the set. Returns whether all the items was added.
 
 Examples:
 ```go
-NewMapSet(1,2).Add(3,4) // true
-NewMapSet(1,2).Add(1,4) // false
-NewMapSet(1,2).Add(1,2) // false
+NewSet(1,2).Add(3,4) // true
+NewSet(1,2).Add(1,4) // false
+NewSet(1,2).Add(1,2) // false
 ```
 
 ### Clear()
 
 removes all elements from the set, leaving the empty set.
 
-### Removes(...interface{})
+### Removes(...interface{}) bool
 
 remove elements from the set.
 
 Examples:
 ```go
-NewMapSet(1,2).Removes(3,4) // {1,2}
-NewMapSet(1,2).Removes(1,4) // {2}
-NewMapSet(1,2).Removes(1,2) // {}
+NewSet(1,2).Removes(3,4) // false
+NewSet(1,2).Removes(1,4) // false
+NewSet(1,2).Removes(1,2) // true
 ```
 
 ### Contains(...interface{}) bool
@@ -95,10 +96,10 @@ Returns whether the given items are all in the set.
 
 Examples:
 ```go
-NewMapSet(1,2).Contains(1) // true
-NewMapSet(1,2).Contains(1,2) // true
-NewMapSet(1,2).Contains(1,2,3) // false
-NewMapSet(1,2).Contains(3) // false
+NewSet(1,2).Contains(1) // true
+NewSet(1,2).Contains(1,2) // true
+NewSet(1,2).Contains(1,2,3) // false
+NewSet(1,2).Contains(3) // false
 ```
 
 ### Empty() bool
@@ -107,8 +108,8 @@ The empty set (or null set) is the unique set that has no members. It is denoted
 
 Examples:
 ```go
-NewMapSet().Empty() // true
-NewMapSet(1,2).Empty() // false
+NewSet().Empty() // true
+NewSet(1,2).Empty() // false
 ```
 
 ### Singleton() bool
@@ -119,8 +120,8 @@ Halmos draws the analogy that a box containing a hat is not the same as the hat.
 
 Examples:
 ```go
-NewMapSet(1).Singleton() //true
-NewMapSet(1,2).Singleton() //false
+NewSet(1).Singleton() //true
+NewSet(1,2).Singleton() //false
 ```
 
 ### IsSub(ISet) bool
@@ -132,8 +133,8 @@ A third pair of operators ⊂ and ⊃ are used differently by different authors:
 Examples:
 ```go
 // The set of all humans is a proper subset of the set of all mammals.
-NewMapSet(1,3).IsSub(NewMapSet(1,2,3,4)) // true
-NewMapSet(1,2,3,4).IsSub(NewMapSet(1,2,3,4)) // true
+NewSet(1,3).IsSub(NewSet(1,2,3,4)) // true
+NewSet(1,2,3,4).IsSub(NewSet(1,2,3,4)) // true
 ```
 The empty set is a subset of every set, and every set is a subset of itself.
 
@@ -143,9 +144,9 @@ Two sets can be "added" together. The union of A and B, denoted by A ∪ B, is t
 
 Examples:
 ```go
-NewMapSet(1,2).Unions(NewMapSet(1,2)) // NewMapSet(1,2)
-NewMapSet(1,2).Unions(NewMapSet(3,2)) // NewMapSet(1,2,3)
-NewMapSet(1,2,3).Unions(NewMapSet(3), NewMapSet(4,5)) // NewMapSet(1,2,3,4,5)
+NewSet(1,2).Unions(NewSet(1,2)) // NewSet(1,2)
+NewSet(1,2).Unions(NewSet(3,2)) // NewSet(1,2,3)
+NewSet(1,2,3).Unions(NewSet(3), NewSet(4,5)) // NewSet(1,2,3,4,5)
 ```
 
 ### Intersections(...ISet) ISet
@@ -156,9 +157,9 @@ The intersection of A and B, denoted A ∩ B.
 
 Examples:
 ```go
-NewMapSet(1,2).Intersections(NewMapSet(1,2)) // NewMapSet(1,2)
-NewMapSet(1,2).Intersections(NewMapSet(3,2)) // NewMapSet(2)
-NewMapSet(1,2).Intersections(NewMapSet(3,4)) // NewMapSet()
+NewSet(1,2).Intersections(NewSet(1,2)) // NewSet(1,2)
+NewSet(1,2).Intersections(NewSet(3,2)) // NewSet(2)
+NewSet(1,2).Intersections(NewSet(3,4)) // NewSet()
 ```
 
 ### Complements(...ISet) ISet
@@ -173,8 +174,8 @@ A′ = U \ A.
 
 Examples:
 ```go
-NewMapSet(1,2).Complements(NewMapSet(1,2)) // NewMapSet().
-NewMapSet(1,2,3,4).Complements(NewMapSet(1,3)) // NewMapSet(2,4).
+NewSet(1,2).Complements(NewSet(1,2)) // NewSet().
+NewSet(1,2,3,4).Complements(NewSet(1,3)) // NewSet(2,4).
 ```
 
 ### Clone() ISet
@@ -189,9 +190,9 @@ The order in which the elements were added is irrelevant.
 
 Examples:
 ```go
-NewMapSet(1,2).Equal(NewMapSet(3,4)) // false
-NewMapSet(1,2).Equal(NewMapSet(1,4)) // false
-NewMapSet(1,2).Equal(NewMapSet(1,2)) // true
+NewSet(1,2).Equal(NewSet(3,4)) // false
+NewSet(1,2).Equal(NewSet(1,4)) // false
+NewSet(1,2).Equal(NewSet(1,2)) // true
 ```
 
 ### Pop() interface{}
@@ -201,9 +202,9 @@ return nil if set is full.
 
 Examples:
 ```go
-NewMapSet(1).Pop() // 1
-NewMapSet(1,2).Pop() // 1 or 2
-NewMapSet().Pop() // nil
+NewSet(1).Pop() // 1
+NewSet(1,2).Pop() // 1 or 2
+NewSet().Pop() // nil
 ```
 
 ### ToSlice() Slice
@@ -212,25 +213,10 @@ Returns the members of the set as a slice.
 
 Examples:
 ```go
-NewMapSet().ToSlice() // nil
-NewMapSet(1,2).ToSlice().Interface() // []interface{}{1,2}
-NewMapSet(1,2).ToSlice().Int() // []int{1,2}, nil
-NewMapSet(1,2).ToSlice().Int64() // []int64{1,2}, nil
-```
-
-### Iterator() *Iterator
-
-Returns an Iterator object that you can use to range over the set.
-
-Examples:
-```go
-iter := NewMapSet(1,2).Iterator()
-defer iter.Stop()
-for elem := range iter.C{
-    fmt.Println(elem)
-}
-// 1
-// 2
+NewSet().ToSlice() // nil
+NewSet(1,2).ToSlice().Interface() // []interface{}{1,2}
+NewSet(1,2).ToSlice().Int() // []int{1,2}, nil
+NewSet(1,2).ToSlice().Int64() // []int64{1,2}, nil
 ```
 
 ### String() string
@@ -239,6 +225,6 @@ Formatted output string.
 
 Examples:
 ```go
-NewMapSet(1,2,3).String() // {1,2,3}
+NewSet(1,2,3).String() // {1,2,3}
 ```
 
